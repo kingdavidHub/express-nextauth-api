@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Error } from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 dotenv.config();
@@ -22,8 +22,9 @@ app.get("/", (req: Request, res: Response) => {
 
 
 
-app.use("*", (req: Request, res: Response) => {
-  res.status(404).json({
+app.use("*", (err: Error, req: Request, res: Response) => {
+  const statusCode = err.status || 500
+  res.status(statusCode).json({
     message: "Not Found",
   });
 })
